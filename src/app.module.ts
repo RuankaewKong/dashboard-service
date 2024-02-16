@@ -1,17 +1,22 @@
 import { Module } from '@nestjs/common';
-import { DashboardService } from './modules/dashboard/service/dashboard.service';
-import { DashboardController } from './modules/dashboard/dashboard.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseConfigService } from './configs/database.config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.DB_URI_FULL || '', {
-      dbName: 'dashboard',
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: MongooseConfigService,
     }),
     DashboardModule,
   ],
-  controllers: [DashboardController],
-  providers: [DashboardService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

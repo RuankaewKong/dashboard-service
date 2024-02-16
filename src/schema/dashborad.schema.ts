@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { DASHBOARD_DB_CONST } from 'src/configs/database.comfig';
+import { DASHBOARD_DB_CONST } from 'src/configs/dashboard.config';
 
-export type DashboradDocument = HydratedDocument<DashboradEntity>;
+export type DashboradDocument = HydratedDocument<DashboardEntity>;
 
 @Schema({ collection: DASHBOARD_DB_CONST.COLLECTION.DASHBOARD })
-export class DashboradEntity {
-  @Prop()
+export class DashboardEntity {
+  @Prop({ type: String, required: true, unique: true, index: true })
   key: string;
 
-  @Prop([String])
-  metaData: string[];
+  @Prop()
+  user: string;
 }
 
-export const DashboardSchema = SchemaFactory.createForClass(DashboradEntity);
+export const DashboardSchema = SchemaFactory.createForClass(DashboardEntity);

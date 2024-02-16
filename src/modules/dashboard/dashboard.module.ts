@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { DashboardController } from './dashboard.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DashboardSchema, DashboradEntity } from 'src/schema/dashborad.schema';
+import { DashboardSchema, DashboardEntity } from 'src/schema/dashborad.schema';
+import { DashboardService } from './service/dashboard.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: DashboradEntity.name, schema: DashboardSchema },
+      { name: DashboardEntity.name, schema: DashboardSchema },
     ]),
   ],
   controllers: [DashboardController],
-  providers: [],
+  providers: [DashboardService],
 })
 export class DashboardModule {}
