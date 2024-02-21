@@ -1,21 +1,31 @@
 import { Body, Controller, Get, Post, Version } from '@nestjs/common';
 import { DashboardService } from './service/dashboard.service';
-import { DashboardEntity } from 'src/schema/dashborad.schema';
-import { CreateUserDto } from './usecase/cerate';
+import { OrderDto, OrderResponse } from './usecase/post-order';
+// import { DashboardDL } from '../data-access-layer/dashboard/dashboard.dl';
+// import { DataResponse } from './usecase/get-data';
+// import { DashboardEntity } from '../data-access-layer/dashboard/dashboard.entity';
 
 @Controller('dashboard')
 export class DashboardController {
   constructor(private dashBoardService: DashboardService) {}
 
   @Version('1')
-  @Get('/getUser')
-  async getUser(): Promise<DashboardEntity[]> {
-    return this.dashBoardService.findAll();
+  @Get('/getMetaData')
+  async getData(): Promise<any[]> {
+    const dataPromise = this.dashBoardService.calulateKey();
+    try {
+      const data = await dataPromise;
+      return data;
+    } catch (error) {
+      console.error('Error occurred:', error);
+      throw error;
+    }
   }
 
   @Version('1')
-  @Post('/create-user')
-  async createUser(@Body() createDto: CreateUserDto): Promise<DashboardEntity> {
-    return this.dashBoardService.create(createDto);
+  @Post('/add-meta')
+  async createUser(@Body() orderRequest: OrderDto): Promise<OrderResponse> {
+    console.log('success');
+    return this.dashBoardService.sendOrder(orderRequest);
   }
 }

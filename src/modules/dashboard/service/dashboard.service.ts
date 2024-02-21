@@ -1,22 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
-import { DashboardEntity } from 'src/schema/dashborad.schema';
-import { CreateUserDto } from '../usecase/cerate';
+import { Injectable, Logger } from '@nestjs/common';
+import { DashboardRepository } from 'src/modules/data-access-layer/dashboard/dashboard.repository';
+import { OrderRequset, OrderResponse } from '../usecase/post-order';
+import { DashboardDL } from 'src/modules/data-access-layer/dashboard/dashboard.dl';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DashboardService {
-  constructor(
-    @InjectModel(DashboardEntity.name)
-    private readonly dashBoardModel: mongoose.Model<DashboardEntity>,
-  ) {}
+  private logger: Logger = new Logger(DashboardService.name);
 
-  async create(createUser: CreateUserDto): Promise<DashboardEntity> {
-    const created = new this.dashBoardModel(createUser);
-    return created.save();
+  constructor(private readonly dashBoardRepository: DashboardRepository) {}
+
+  async getAllDashboard(): Promise<DashboardDL[]> {
+    const result = await this.dashBoardRepository.getDashboard();
+    return result;
   }
 
-  async findAll(): Promise<DashboardEntity[]> {
-    return this.dashBoardModel.find().exec();
+  async sendOrder(req: OrderRequset): Promise<OrderResponse> {
+    const created = await this.dashBoardRepository.create(req);
+    this.calulateKey();
+    return { status: 'success', campaign: created.key };
+  }
+
+  async calulateKey(): Promise<any> {
+    const data = await this.dashBoardRepository.getDashboard();
+    const groupedData = _.groupBy(data, 'key');
+    const groupCount = _.mapValues(groupedData, (g) => g.length);
+
+    const keys = Object.keys(groupCount);
+    const counts = Object.values(groupCount);
+
+    // this.logger.debug({ keys, counts });
+    return { keys, counts };
   }
 }

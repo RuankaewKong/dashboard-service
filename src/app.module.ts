@@ -16,7 +16,5 @@ import { MongooseConfigService } from './configs/database.config';
     }),
     DashboardModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

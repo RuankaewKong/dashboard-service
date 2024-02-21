@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
 import { DashboardController } from './dashboard.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { DashboardSchema, DashboardEntity } from 'src/schema/dashborad.schema';
 import { DashboardService } from './service/dashboard.service';
+import { DataAccessLayerModule } from '../data-access-layer/data-access-layer.module';
+import { ConfigModule } from '@nestjs/config';
+import { DashboardUsecase } from './usecase/post-order.usecase';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: DashboardEntity.name, schema: DashboardSchema },
-    ]),
-  ],
+  imports: [ConfigModule, DataAccessLayerModule],
   controllers: [DashboardController],
-  providers: [DashboardService],
+  providers: [DashboardService, DashboardUsecase],
 })
 export class DashboardModule {}
