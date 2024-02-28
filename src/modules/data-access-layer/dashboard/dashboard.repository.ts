@@ -3,6 +3,7 @@ import { DashboardEntity } from './dashboard.entity';
 import mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { DashboardDL } from './dashboard.dl';
+import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class DashboardRepository {
@@ -24,15 +25,16 @@ export class DashboardRepository {
     const dashboard = await this.dashboardRepository.find();
     return dashboard.map(this.toDataLayer);
   }
+
+  async findOne(condition: FindOneOptions): Promise<any | null> {
+    const data = await this.dashboardRepository.findOne(condition);
+    return this.toDataLayer(data);
+  }
+
   toDataLayer(entity: DashboardEntity): DashboardDL {
     return {
-      key: entity.key,
-      metaData: {
-        campaignName: entity.metaData?.campaignName,
-        price: entity.metaData?.price,
-        phone: entity.metaData?.phone,
-        paymentChanel: entity.metaData?.paymentChanel,
-      },
+      action: entity.action,
+      metaData: entity.metaData,
     };
   }
 }

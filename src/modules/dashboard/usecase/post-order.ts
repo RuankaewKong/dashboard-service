@@ -1,24 +1,20 @@
 export interface OrderDto {
-  key: string;
+  action: string;
   metaData: {
-    campaignName: string;
-    price: number;
-    phone: string;
-    paymentChanel: string;
+    key: string;
+    value: string | number | boolean | any;
   };
 }
 
 export interface OrderRequset {
-  key: string;
+  action: string;
   metaData: {
-    campaignName: string;
-    price: number;
-    phone: string;
-    paymentChanel: string;
+    key: string;
+    value: string | number | boolean | any;
   };
 }
 
 export interface OrderResponse {
   status: string;
-  campaign: string;
+  action: string;
 }

@@ -1,24 +1,17 @@
 export interface DataInfo {
-  key: string;
+  action: string;
   metaData: OrderInfo;
 }
 
 export interface OrderInfo {
-  campaignName: string;
-  price: number;
-  phone: string;
-  paymentChanel: string;
+  key: string;
+  value: string | number | boolean | any;
 }
 
 export interface DataResponse {
-  key: string;
+  action: string;
   metaData: {
-    campaignName: string;
-    price: number;
-    phone: string;
-    paymentChanel: string;
+    key: string;
+    value: number;
   };
 }
-// export interface DashboardResponse {
-//   key: any;
-// }

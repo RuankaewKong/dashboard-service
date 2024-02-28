@@ -3,7 +3,7 @@ import { DashboardController } from './dashboard.controller';
 import { DashboardService } from './service/dashboard.service';
 import { DataAccessLayerModule } from '../data-access-layer/data-access-layer.module';
 import { ConfigModule } from '@nestjs/config';
-import { DashboardUsecase } from './usecase/post-order.usecase';
+import { DashboardUsecase } from './usecase/dashboard.usecase';
 
 @Module({
   imports: [ConfigModule, DataAccessLayerModule],
